@@ -4,7 +4,6 @@ import Logdna, {LogLevel} from "@logdna/logger"
 import * as Sentry from "@sentry/minimal"
 
 interface LoggerConfig {
-  browser?: boolean
   logdnaAppName?: string
   logdnaIngestionKey: string
   sentryDsn: string
