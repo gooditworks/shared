@@ -1,13 +1,16 @@
 {
-  "name": "gooditworks_base",
+  "name": "@gooditworks/shared",
   "version": "0.1.0",
-  "description": "Gooditworks base project",
-  "repository": "https://github.com/gooditworks/base",
+  "description": "Gooditworks shared libs monorepo",
+  "repository": "https://github.com/gooditworks/shared",
   "author": "Max Eliseev <mxseev@gmail.com>",
   "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "lint": "concurrently -c green \"npm:lint:*\"",
-    "lint:ts": "eslint --ext .ts,.tsx .",
+    "lint:ts": "eslint --ext .ts .",
     "lint:typecheck": "tsc --noEmit --project tsconfig.json",
     "test": "concurrently -c green \"npm:test:*\"",
     "test:unit": "jest"
