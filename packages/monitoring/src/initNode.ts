@@ -6,10 +6,12 @@ import {MonitoringConfig} from "."
 const init = (config: MonitoringConfig) => {
   const {logger} = config
 
-  SentryNode.init({dsn: logger.sentryDsn})
-  LogdnaNode.setupDefaultLogger(logger.logdnaIngestionKey, {
-    app: logger.logdnaAppName
-  })
+  if (logger) {
+    SentryNode.init({dsn: logger.sentryDsn})
+    LogdnaNode.setupDefaultLogger(logger.logdnaIngestionKey, {
+      app: logger.logdnaAppName
+    })
+  }
 }
 
 export default init

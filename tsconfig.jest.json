@@ -1,8 +1,9 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/**/*.test.ts"],
+  "include": ["packages/*/src/**/*.test.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "types": ["./packages/monitoring/src", "jest"],
     "isolatedModules": false
   }
 }

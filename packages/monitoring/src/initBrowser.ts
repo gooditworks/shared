@@ -7,12 +7,16 @@ import {MonitoringConfig} from "."
 const init = (config: MonitoringConfig) => {
   const {logger, analytics} = config
 
-  SentryBrowser.init({dsn: logger.sentryDsn})
-  LogdnaBrowser.init(logger.logdnaIngestionKey, {
-    app: logger.logdnaAppName
-  })
+  if (logger) {
+    SentryBrowser.init({dsn: logger.sentryDsn})
+    LogdnaBrowser.init(logger.logdnaIngestionKey, {
+      app: logger.logdnaAppName
+    })
+  }
 
-  installGtag(analytics.measurementId)
+  if (analytics) {
+    installGtag(analytics.measurementId)
+  }
 }
 
 export default init
