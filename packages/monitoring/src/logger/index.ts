@@ -35,7 +35,7 @@ class Logger {
 
   log(level: LogLevel, message: string, context?: LogEntryContext) {
     const fullModule = this.moduleStack.join("::")
-    const fullMessage = `${fullModule} ${message}`
+    const fullMessage = fullModule ? `${fullModule} ${message}` : message
 
     const consoleLogFn = consoleLogFns[level]
     consoleLogFn(fullMessage, context)
