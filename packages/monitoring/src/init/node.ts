@@ -1,7 +1,7 @@
 import LogdnaNode from "@logdna/logger"
 import * as SentryNode from "@sentry/node"
 
-import {MonitoringConfig} from "."
+import {MonitoringConfig} from ".."
 
 const init = (config: MonitoringConfig) => {
   const {logger} = config

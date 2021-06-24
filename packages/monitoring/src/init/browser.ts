@@ -2,7 +2,7 @@ import LogdnaBrowser from "@logdna/browser"
 import * as SentryBrowser from "@sentry/browser"
 import {install as installGtag} from "ga-gtag"
 
-import {MonitoringConfig} from "."
+import {MonitoringConfig} from ".."
 
 const init = (config: MonitoringConfig) => {
   const {logger, analytics} = config

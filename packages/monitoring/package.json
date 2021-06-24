@@ -9,16 +9,16 @@
   "types": "build/index.d.ts",
   "exports": {
     "./": "./build/index.js",
-    "./init-browser": "./build/initBrowser.js",
-    "./init-node": "./build/initNode.js"
+    "./init-browser": "./build/init/browser.js",
+    "./init-node": "./build/init/node.js"
   },
   "typesVersions": {
     "*": {
       "init-browser": [
-        "build/initBrowser.d.ts"
+        "build/init/browser.js"
       ],
       "init-node": [
-        "build/initNode.d.ts"
+        "build/init/node.d.ts"
       ]
     }
   },
