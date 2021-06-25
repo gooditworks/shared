@@ -1,8 +1,10 @@
 {
-  "include": ["packages/*/src/**/*.ts"],
+  "include": ["packages/*/src/**/*.ts", "typings/gtag.d.ts"],
   "exclude": ["node_modules", "**/*.test.ts"],
   "compilerOptions": {
-    "types": ["./packages/monitoring/src", "jest"],
+    "declaration": true,
+    "types": ["jest", "node"],
+    "typeRoots": ["node_modules/@types", "typings"],
     "baseUrl": ".",
     "moduleResolution": "node",
     "module": "commonjs",
