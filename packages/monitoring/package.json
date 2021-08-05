@@ -1,39 +1,18 @@
 {
   "name": "@gooditworks/monitoring",
   "version": "1.0.0",
-  "description": "Monitoring library",
+  "description": "Monitoring library with logger",
   "repository": "https://github.com/gooditworks/shared",
   "author": "Max Eliseev <mxseev@gmail.com>",
   "license": "MIT",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "exports": {
-    "./": "./build/index.js",
-    "./init-browser": "./build/init/browser.js",
-    "./init-node": "./build/init/node.js"
-  },
-  "typesVersions": {
-    "*": {
-      "init-browser": [
-        "build/init/browser.js"
-      ],
-      "init-node": [
-        "build/init/node.d.ts"
-      ]
-    }
-  },
   "scripts": {
     "build": "tsc"
   },
   "dependencies": {
-    "@logdna/browser": "^1.1.2",
     "@logdna/logger": "^2.3.2",
-    "@sentry/browser": "^6.7.2",
     "@sentry/minimal": "^6.7.2",
-    "@sentry/node": "^6.7.2",
-    "ga-gtag": "^1.1.0"
-  },
-  "devDependencies": {
-    "@types/gtag.js": "^0.0.6"
+    "@sentry/node": "^6.7.2"
   }
 }

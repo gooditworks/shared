@@ -1,23 +1,40 @@
 /* eslint-disable no-console */
 
-import Logdna, {LogLevel} from "@logdna/logger"
+import Logdna, {LogLevel as LogDNALogLevel} from "@logdna/logger"
 import * as Sentry from "@sentry/minimal"
 
 interface LoggerConfig {
   logdnaAppName?: string
   logdnaIngestionKey: string
-  sentryDsn: string
+  sentryDsn?: string
 }
 
 type LogEntryContext = Record<string, unknown>
 
+enum LogLevel {
+  Trace = "trace",
+  Debug = "debug",
+  Info = "info",
+  Warn = "warn",
+  Error = "error",
+  Fatal = "fatal"
+}
+
 const consoleLogFns: Record<LogLevel, typeof console.log> = {
-  [LogLevel.trace]: console.trace,
-  [LogLevel.debug]: console.debug,
-  [LogLevel.info]: console.info,
-  [LogLevel.warn]: console.warn,
-  [LogLevel.error]: console.error,
-  [LogLevel.fatal]: console.error
+  [LogLevel.Trace]: console.trace,
+  [LogLevel.Debug]: console.debug,
+  [LogLevel.Info]: console.info,
+  [LogLevel.Warn]: console.warn,
+  [LogLevel.Error]: console.error,
+  [LogLevel.Fatal]: console.error
+}
+
+const isProduction = process.env.NODE_ENV === "production"
+
+const sentryCaptureMessage = (message: string, context?: LogEntryContext) => {
+  if (isProduction) {
+    Sentry.captureMessage(message, context)
+  }
 }
 
 class Logger {
@@ -38,42 +55,57 @@ class Logger {
     const fullMessage = fullModule ? `${fullModule} ${message}` : message
 
     const consoleLogFn = consoleLogFns[level]
-    consoleLogFn(fullMessage, context)
+    consoleLogFn(fullMessage, context || "")
 
-    const logDna = Logdna.setupDefaultLogger("")
-    logDna.log(fullMessage, {level, context})
+    if (isProduction) {
+      try {
+        const logDna = Logdna.setupDefaultLogger("")
+        logDna.log(fullMessage, {
+          level: level as unknown as LogDNALogLevel,
+          context
+        })
+      } catch (error) {
+        console.warn("LogDNA error (monitoring is not initialized?): ", error)
+      }
+    }
   }
 
   trace(message: string, context?: LogEntryContext) {
-    this.log(LogLevel.trace, message, context)
+    this.log(LogLevel.Trace, message, context)
   }
 
   debug(message: string, context?: LogEntryContext) {
-    this.log(LogLevel.debug, message, context)
+    this.log(LogLevel.Debug, message, context)
   }
 
   info(message: string, context?: LogEntryContext) {
-    this.log(LogLevel.info, message, context)
+    this.log(LogLevel.Info, message, context)
   }
 
   warn(message: string, context?: LogEntryContext) {
-    this.log(LogLevel.warn, message, context)
-    Sentry.captureMessage(`Warning log message: ${message}`, context)
+    this.log(LogLevel.Warn, message, context)
+
+    sentryCaptureMessage(`Warning log message: ${message}`, context)
   }
 
   error(message: string, context?: LogEntryContext) {
-    this.log(LogLevel.error, message, context)
-    Sentry.captureMessage(`Error log message: ${message}`, context)
+    this.log(LogLevel.Error, message, context)
+
+    sentryCaptureMessage(`Error log message: ${message}`, context)
   }
 
   fatal(message: string, context?: LogEntryContext) {
-    this.log(LogLevel.fatal, message, context)
-    Sentry.captureMessage(`Fatal log message: ${message}`, context)
+    this.log(LogLevel.Fatal, message, context)
+
+    sentryCaptureMessage(`Fatal log message: ${message}`, context)
   }
 
   captureException(exception: Error, context?: LogEntryContext) {
     this.error(`Exception: ${exception.message}`, context)
-    Sentry.captureException(exception, context)
+
+    if (isProduction) {
+      Sentry.captureException(exception, context)
+    }
   }
 }
 

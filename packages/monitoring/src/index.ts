@@ -1,13 +1,25 @@
+import LogdnaNode from "@logdna/logger"
+import * as SentryNode from "@sentry/node"
+
 import Logger, {LoggerConfig} from "./logger"
-import Analytics, {AnalyticsConfig} from "./analytics"
 
 interface MonitoringConfig {
   logger?: LoggerConfig
-  analytics?: AnalyticsConfig
+}
+
+const init = (config: MonitoringConfig) => {
+  const {logger} = config
+
+  if (logger) {
+    SentryNode.init({dsn: logger.sentryDsn})
+    LogdnaNode.setupDefaultLogger(logger.logdnaIngestionKey, {
+      app: logger.logdnaAppName
+    })
+  }
 }
 
 const globalLogger = new Logger()
-const globalAnalytics = new Analytics()
 
+export default init
+export {globalLogger as logger}
 export type {MonitoringConfig}
-export {globalLogger as logger, globalAnalytics as analytics}
