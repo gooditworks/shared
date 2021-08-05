@@ -31,7 +31,7 @@ initMonitoring({
 После инициализации пакет можно использовать в любом месте приложения:
 
 ```typescript
-import {logger, analytics} from "@gooditworks/monitoring"
+import {logger} from "@gooditworks/monitoring"
 
 logger.info("monitoring initializated")
 logger.error("cannot fetch orders", {userId: "cook"})
