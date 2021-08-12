@@ -1,16 +1,17 @@
 {
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "src/**/*.test.ts"],
+  "include": ["packages/*/src/**/*.ts", "typings/gtag.d.ts"],
+  "exclude": ["node_modules", "**/*.test.ts"],
   "compilerOptions": {
-    "paths": {
-      "src/*": ["src/*"],
-    },
+    "declaration": true,
+    "types": ["jest", "node"],
+    "typeRoots": ["node_modules/@types", "typings"],
     "baseUrl": ".",
     "moduleResolution": "node",
     "module": "commonjs",
     "jsx": "preserve",
     "target": "es5",
     "lib": ["esnext"],
+    "noEmit": true,
     "strict": true,
     "allowJs": false,
     "noImplicitAny": true,
@@ -18,6 +19,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   }
 }

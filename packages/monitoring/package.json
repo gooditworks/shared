@@ -1,0 +1,18 @@
+{
+  "name": "@gooditworks/monitoring",
+  "version": "1.0.0",
+  "description": "Monitoring library with logger",
+  "repository": "https://github.com/gooditworks/shared",
+  "author": "Max Eliseev <mxseev@gmail.com>",
+  "license": "MIT",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@logdna/logger": "^2.3.2",
+    "@sentry/minimal": "^6.7.2",
+    "@sentry/node": "^6.7.2"
+  }
+}
