@@ -8,11 +8,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "build": "tsc"
-  },
-  "dependencies": {
-    "@logdna/logger": "^2.3.2",
-    "@sentry/minimal": "^6.7.2",
-    "@sentry/node": "^6.7.2"
+    "build": "tsc",
+    "prepare": "npm run build"
   }
 }
