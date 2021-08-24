@@ -47,8 +47,8 @@ initMonitoring({
   logger: {
     loggerTransports: [
       new ConsoleTransport(),
-      new LogdnaNodeTransport("0123456789abcdef", {appName: "readme"})
-    ]
+      new LogdnaNodeTransport("0123456789abcdef", {app: "readme"})
+    ],
     exceptionCapturers: [
       new ConsoleCapturer(),
       new SentryNodeCapturer({dsn: "https://__DSN__"})
@@ -69,7 +69,7 @@ initMonitoring({
   logger: {
     loggerTransports: [
       new ConsoleTransport(),
-    ]
+    ],
     exceptionCapturers: [
       new ConsoleCapturer(),
       new SentryBrowserCapturer({dsn: "https://__DSN__"})
