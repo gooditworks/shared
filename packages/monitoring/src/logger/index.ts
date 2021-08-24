@@ -57,6 +57,9 @@ class Logger {
   }
 
   captureException(exception: Error, context?: EventContext) {
+    const logMessage = `Error: ${exception.message}`
+    this.log(LogLevel.Error, logMessage, context)
+
     this.config.exceptionCapturers.forEach(capturer => {
       capturer.captureException(exception, context)
     })

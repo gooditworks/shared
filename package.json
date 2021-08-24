@@ -15,7 +15,7 @@
     "lint:base": "sh ./scripts/check_base_update.sh",
     "lint:typecheck": "tsc --noEmit --project tsconfig.json",
     "test": "concurrently -c green \"npm:test:*\"",
-    "test:unit": "jest",
+    "test:unit": "jest --silent",
     "release": "standard-version",
     "commit": "git add . && cz"
   },
