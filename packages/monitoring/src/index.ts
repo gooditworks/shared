@@ -1,12 +1,14 @@
 import Logger, {LoggerConfig} from "./logger"
+import ConsoleTransport from "./logger/transport/console"
+import ConsoleCapturer from "./logger/capturer/console"
 
 interface Config {
   logger: LoggerConfig
 }
 
 const logger = new Logger({
-  loggerTransports: [],
-  exceptionCapturers: []
+  loggerTransports: [new ConsoleTransport()],
+  exceptionCapturers: [new ConsoleCapturer()]
 })
 
 const init = (config: Config) => {
