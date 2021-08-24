@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/browser"
 
 import {EventContext, ExceptionCapturer} from "../types"
 
-class SentryNodeCapturer extends ExceptionCapturer {
+class SentryBrowserCapturer extends ExceptionCapturer {
   constructor(options: Sentry.BrowserOptions) {
     super()
 
@@ -20,4 +20,4 @@ class SentryNodeCapturer extends ExceptionCapturer {
   }
 }
 
-export default SentryNodeCapturer
+export default SentryBrowserCapturer

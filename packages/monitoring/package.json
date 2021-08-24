@@ -11,6 +11,37 @@
     "build": "tsc",
     "prepare": "npm run build"
   },
+  "exports": {
+    ".": "./build/index.js",
+    "./logger/transport/console": "./build/logger/transport/console.js",
+    "./logger/transport/logdnaNode": "./build/logger/transport/logdnaNode.js",
+    "./logger/transport/logdnaBrowser": "./build/logger/transport/logdnaBrowser.js",
+    "./logger/capturer/console": "./build/logger/capturer/console.js",
+    "./logger/capturer/sentryNode": "./build/logger/capturer/sentryNode.js",
+    "./logger/capturer/sentryBrowser": "./build/logger/capturer/sentryBrowser.js"
+  },
+  "typesVersions": {
+    "*": {
+      "logger/transport/console": [
+        "./build/logger/transport/console.d.ts"
+      ],
+      "logger/transport/logdnaNode": [
+        "./build/logger/transport/logdnaNode.d.ts"
+      ],
+      "logger/transport/logdnaBrowser": [
+        "./build/logger/transport/logdnaBrowser.d.ts"
+      ],
+      "logger/capturer/console": [
+        "./build/logger/capturer/console.d.ts"
+      ],
+      "logger/capturer/sentryNode": [
+        "./build/logger/capturer/sentryNode.d.ts"
+      ],
+      "logger/capturer/sentryBrowser": [
+        "./build/logger/capturer/sentryBrowser.d.ts"
+      ]
+    }
+  },
   "dependencies": {
     "@logdna/browser": "^1.1.3",
     "@logdna/logger": "^2.3.2",
