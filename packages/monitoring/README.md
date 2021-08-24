@@ -62,7 +62,6 @@ initMonitoring({
 import initMonitoring from "@gooditworks/monitoring"
 
 import ConsoleTransport from "@gooditworks/monitoring/logger/transport/console"
-import LogdnaBrowserTransport from "@gooditworks/monitoring/logger/transport/logdnaBrowser"
 import ConsoleCapturer from "@gooditworks/monitoring/logger/capturer/console"
 import SentryBrowserCapturer from "@gooditworks/monitoring/logger/capturer/sentryBrowser"
 
@@ -70,7 +69,6 @@ initMonitoring({
   logger: {
     loggerTransports: [
       new ConsoleTransport(),
-      new LogdnaBrowserTransport("0123456789abcdef", {appName: "readme"})
     ]
     exceptionCapturers: [
       new ConsoleCapturer(),
@@ -98,16 +96,6 @@ const transport = new ConsoleTransport()
 import LogdnaNodeTransport from "@gooditworks/monitoring/logger/transport/logdnaNode"
 
 const transport = new LogdnaNodeTransport("0123456789abcdef", {app: "superapp"})
-```
-
-#### `LogdnaBrowserTransport`
-Интеграция logDNA для браузерного окружения. Использует [`@logdna/browser`](https://www.npmjs.com/package/@logdna/browser). Принимает такие же параметры, как и при [инициализации `@logdna/browser`](https://www.npmjs.com/package/@logdna/browser#configuration-options).   
-** Не забудьте [добавить домен в параметры CORS](https://www.npmjs.com/package/@logdna/browser#enable-cors-in-logdna)! **
-
-```ts
-import LogdnaBrowserTransport from "@gooditworks/monitoring/logger/transport/logdnaBrowser"
-
-const transport = new LogdnaBrowserTransport("0123456789abcdef", {app: "smolapp"})
 ```
 
 #### `ConsoleCapturer`
