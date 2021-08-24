@@ -5,6 +5,9 @@
 ## Публикация/обновление пакета
 
 1. Выполнить 1 и 2 пункт из [readme](readme.md#Использование)
-2. Обновить версию пакета, согласно [semver](https://semver.org)
-3. Собрать пакет (`npm run build`)
-4. Опубликовать его (`npm publish`)
+2. Закоммитить изменения согласно (Conventional commits)[https://www.conventionalcommits.org]
+3. Проверить код: `npm run lint && npm run test`
+4. Не бампая версию вручную, запустить `standard-version`: `npm run release`
+5. Запушить созданный changelog: `git push`
+6. Собрать пакет (`npm run build`)
+7. Опубликовать его (`npm publish`)

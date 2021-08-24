@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["./src/**/*.ts", "../../typings/gtag.d.ts"],
+  "include": ["./src/**/*.ts"],
   "compilerOptions": {
     "outDir": "build",
     "noEmit": false

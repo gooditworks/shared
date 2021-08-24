@@ -4,7 +4,25 @@
 
 - Логгер с поддержкой нескольких уровней логгирования, отправкой логов в LogDNA и исключений в Sentry
 
+```ts
+import {logger} from "@gooditworks/monitoring"
+
+logger.info("something happen")
+logger.error("shit happens")
+
+const apiLogger = logger.module("api")
+api.warn("warning in API handler", {requestId: 42})
+
+try {
+  dangerousAction()
+} catch (error) {
+  logger.captureException(error)
+}
+```
+
 ## Использование
+
+### Установка
 
 Установить пакет `@gooditworks/monitoring` стандартными средствами (см. [использование shared библиотек](readme.md#Использование))
 
@@ -14,31 +32,93 @@ npm i @gooditworks/monitoring
 
 ### Инициализация
 
-Пакет должен быть инициализирован перед использованием. Для этого нужно он экспортирует функцию инициализации, которая должна быть выполнена в entrypoint приложения:
+Пакет должен быть инициализирован перед использованием. Это делает функция `initMonitoring`, экспортируемая по-умолчанию (`export default`). Необходимо выбрать, импортировать и инициализировать необходимые модули и вызвать функцию инициализации. Изначально включены только `ConsoleTransport` и `ConsoleCapturer`.
 
-```typescript
+#### Пример для Node окружения
+```ts
 import initMonitoring from "@gooditworks/monitoring"
+
+import ConsoleTransport from "@gooditworks/monitoring/logger/transport/console"
+import LogdnaNodeTransport from "@gooditworks/monitoring/logger/transport/logdnaNode"
+import ConsoleCapturer from "@gooditworks/monitoring/logger/capturer/console"
+import SentryNodeCapturer from "@gooditworks/monitoring/logger/capturer/sentryNode"
 
 initMonitoring({
   logger: {
-    sentryDsn: "https://public@sentry.example.com/1",
-    logdnaIngestionKey: "abcdef1234567890",
-    logdnaAppName: "monitoring example"
+    loggerTransports: [
+      new ConsoleTransport(),
+      new LogdnaNodeTransport("0123456789abcdef", {app: "readme"})
+    ],
+    exceptionCapturers: [
+      new ConsoleCapturer(),
+      new SentryNodeCapturer({dsn: "https://__DSN__"})
+    ]
   }
 })
 ```
 
-После инициализации пакет можно использовать в любом месте приложения:
+#### Пример для браузерного окружения
+```ts
+import initMonitoring from "@gooditworks/monitoring"
 
-```typescript
-import {logger} from "@gooditworks/monitoring"
+import ConsoleTransport from "@gooditworks/monitoring/logger/transport/console"
+import ConsoleCapturer from "@gooditworks/monitoring/logger/capturer/console"
+import SentryBrowserCapturer from "@gooditworks/monitoring/logger/capturer/sentryBrowser"
 
-logger.info("monitoring initializated")
-logger.error("cannot fetch orders", {userId: "cook"})
-logger.captureException(new Error("something bad happen"))
-
-const apiLogger = logger.module("api")
-apiLogger.info("HTTP request", {method: "GET"})
+initMonitoring({
+  logger: {
+    loggerTransports: [
+      new ConsoleTransport(),
+    ],
+    exceptionCapturers: [
+      new ConsoleCapturer(),
+      new SentryBrowserCapturer({dsn: "https://__DSN__"})
+    ]
+  }
+})
 ```
 
-Отправка данных во внешние сервисы (LogDNA/Sentry) происходит только при `NODE_ENV === production`.
+### Модули логгера
+
+#### `ConsoleTransport`
+Отображает сообщения в консоли используя стандартный `console.log`. Не имеет параметров.
+
+```ts
+import ConsoleTransport from "@gooditworks/monitoring/logger/transport/console"
+
+const transport = new ConsoleTransport()
+```
+
+#### `LogdnaNodeTransport`
+Интеграция logDNA для окружения Node. Использует [`@logdna/logger`](https://www.npmjs.com/package/@logdna/logger). Принимает такие же параметры, что и [`createLogger`](https://www.npmjs.com/package/@logdna/logger#createloggerkey-options).
+
+```ts
+import LogdnaNodeTransport from "@gooditworks/monitoring/logger/transport/logdnaNode"
+
+const transport = new LogdnaNodeTransport("0123456789abcdef", {app: "superapp"})
+```
+
+#### `ConsoleCapturer`
+Отображает ошибки (exceptions) в консоли используя стандартный `console.log`. Не имеет параметров.
+
+#### `SentryNodeCapturer`
+Интеграция Sentry для окружения Node. Использует [`@sentry/node`](https://www.npmjs.com/package/@sentry/node) и принимает [его параметры](https://docs.sentry.io/platforms/node/configuration/options).
+
+```ts
+import SentryNodeCapturer from "@gooditworks/monitoring/logger/capturer/sentryNode"
+
+const transport = new SentryNodeCapturer({
+  dsn: "https://examplePublicKey@o0.ingest.sentry.io/0"
+})
+```
+
+#### `SentryBrowserCapturer`
+Интеграция Sentry для браузерного окружения. Использует [`@sentry/browser`](https://www.npmjs.com/package/@sentry/browser) и принимает [его параметры](https://docs.sentry.io/platforms/javascript/configuration/options/).
+
+```ts
+import SentryBrowserCapturer from "@gooditworks/monitoring/logger/capturer/sentryBrowser"
+
+const transport = new SentryBrowserCapturer({
+  dsn: "https://examplePublicKey@o0.ingest.sentry.io/0"
+})
+```

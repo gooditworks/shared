@@ -1,113 +1,75 @@
-/* eslint-disable no-console */
-
-import Logdna, {LogLevel as LogDNALogLevel} from "@logdna/logger"
-import * as Sentry from "@sentry/minimal"
+import {LogLevel, LoggerTransport, ExceptionCapturer, EventContext} from "./types"
 
 interface LoggerConfig {
-  logdnaAppName?: string
-  logdnaIngestionKey: string
-  sentryDsn?: string
-}
-
-type LogEntryContext = Record<string, unknown>
-
-enum LogLevel {
-  Trace = "trace",
-  Debug = "debug",
-  Info = "info",
-  Warn = "warn",
-  Error = "error",
-  Fatal = "fatal"
-}
-
-const consoleLogFns: Record<LogLevel, typeof console.log> = {
-  [LogLevel.Trace]: console.trace,
-  [LogLevel.Debug]: console.debug,
-  [LogLevel.Info]: console.info,
-  [LogLevel.Warn]: console.warn,
-  [LogLevel.Error]: console.error,
-  [LogLevel.Fatal]: console.error
-}
-
-const isProduction = process.env.NODE_ENV === "production"
-
-const sentryCaptureMessage = (message: string, context?: LogEntryContext) => {
-  if (isProduction) {
-    Sentry.captureMessage(message, context)
-  }
+  loggerTransports: LoggerTransport[]
+  exceptionCapturers: ExceptionCapturer[]
 }
 
 class Logger {
+  config: LoggerConfig
   moduleStack: string[]
 
-  constructor(moduleStack?: string[]) {
+  constructor(config: LoggerConfig, moduleStack?: string[]) {
+    this.config = config
     this.moduleStack = moduleStack || []
+  }
+
+  setConfig(newConfig: LoggerConfig) {
+    this.config = newConfig
   }
 
   module(name: string): Logger {
     const newStack = [...this.moduleStack, name]
+    const newLogger = new Logger(this.config, newStack)
 
-    return new Logger(newStack)
+    return newLogger
   }
 
-  log(level: LogLevel, message: string, context?: LogEntryContext) {
+  log(level: LogLevel, message: string, context?: EventContext) {
     const fullModule = this.moduleStack.join("::")
     const fullMessage = fullModule ? `${fullModule} ${message}` : message
 
-    const consoleLogFn = consoleLogFns[level]
-    consoleLogFn(fullMessage, context || "")
-
-    if (isProduction) {
-      try {
-        const logDna = Logdna.setupDefaultLogger("")
-        logDna.log(fullMessage, {
-          level: level as unknown as LogDNALogLevel,
-          context
-        })
-      } catch (error) {
-        console.warn("LogDNA error (monitoring is not initialized?): ", error)
-      }
-    }
+    this.config.loggerTransports.forEach(transport => {
+      transport.log(level, fullMessage, context)
+    })
   }
 
-  trace(message: string, context?: LogEntryContext) {
+  trace(message: string, context?: EventContext) {
     this.log(LogLevel.Trace, message, context)
   }
-
-  debug(message: string, context?: LogEntryContext) {
+  debug(message: string, context?: EventContext) {
     this.log(LogLevel.Debug, message, context)
   }
-
-  info(message: string, context?: LogEntryContext) {
+  info(message: string, context?: EventContext) {
     this.log(LogLevel.Info, message, context)
   }
-
-  warn(message: string, context?: LogEntryContext) {
+  warn(message: string, context?: EventContext) {
     this.log(LogLevel.Warn, message, context)
-
-    sentryCaptureMessage(`Warning log message: ${message}`, context)
+    this.captureMessage(`Warning log message: ${message}`, context)
   }
-
-  error(message: string, context?: LogEntryContext) {
+  error(message: string, context?: EventContext) {
     this.log(LogLevel.Error, message, context)
-
-    sentryCaptureMessage(`Error log message: ${message}`, context)
+    this.captureMessage(`Error log message: ${message}`, context)
   }
-
-  fatal(message: string, context?: LogEntryContext) {
+  fatal(message: string, context?: EventContext) {
     this.log(LogLevel.Fatal, message, context)
-
-    sentryCaptureMessage(`Fatal log message: ${message}`, context)
+    this.captureMessage(`Fatal log message: ${message}`, context)
   }
 
-  captureException(exception: Error, context?: LogEntryContext) {
-    this.error(`Exception: ${exception.message}`, context)
+  captureException(exception: Error, context?: EventContext) {
+    const logMessage = `Error: ${exception.message}`
+    this.log(LogLevel.Error, logMessage, context)
 
-    if (isProduction) {
-      Sentry.captureException(exception, context)
-    }
+    this.config.exceptionCapturers.forEach(capturer => {
+      capturer.captureException(exception, context)
+    })
+  }
+  captureMessage(message: string, context?: EventContext) {
+    this.config.exceptionCapturers.forEach(capturer => {
+      capturer.captureMessage(message, context)
+    })
   }
 }
 
-export type {LoggerConfig}
 export default Logger
+export type {LoggerConfig}

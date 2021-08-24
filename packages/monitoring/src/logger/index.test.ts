@@ -1,75 +1,134 @@
-/* eslint-disable no-console, import/first */
+/* eslint-disable max-classes-per-file */
 
-jest.spyOn(global.console, "error").mockImplementation(() => {})
-const consoleTraceSpy = jest.spyOn(global.console, "trace")
+import Logger from "./index"
+import {EventContext, ExceptionCapturer, LoggerTransport, LogLevel} from "./types"
 
-const logdnaLogSpy = jest.fn()
-const setupDefaultLoggerSpy = jest.fn().mockImplementation(() => ({
-  log: logdnaLogSpy
-}))
-jest.mock("@logdna/logger", () => ({
-  setupDefaultLogger: setupDefaultLoggerSpy
-}))
+class TestLoggerTransport extends LoggerTransport {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fake: any = jest.fn()
 
-const sentryCaptureMessageSpy = jest.fn()
-const sentryCaptureExceptionSpy = jest.fn()
-jest.mock("@sentry/minimal", () => ({
-  captureMessage: sentryCaptureMessageSpy,
-  captureException: sentryCaptureExceptionSpy
-}))
+  log(level: LogLevel, message: string, context?: EventContext) {
+    return this.fake(level, message, context)
+  }
+}
 
-process.env.NODE_ENV = "production"
+class TestExceptionCapturer extends ExceptionCapturer {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fake: any = jest.fn()
 
-import Logger from "."
+  captureException(error: Error, context?: EventContext) {
+    return this.fake(error, context)
+  }
 
-describe("logger works correctly", () => {
-  it("copies module stack on Logger.module", () => {
-    const empty = new Logger()
-    expect(empty.moduleStack).toEqual([])
+  captureMessage(message: string, context?: EventContext) {
+    return this.fake(message, context)
+  }
+}
 
-    const aModule = empty.module("a")
-    expect(aModule.moduleStack).toEqual(["a"])
+test("Logger copies module stack", () => {
+  const logger = new Logger({loggerTransports: [], exceptionCapturers: []})
 
-    const bModule = aModule.module("b")
-    expect(bModule.moduleStack).toEqual(["a", "b"])
+  expect(logger.moduleStack).toEqual([])
+
+  const aLogger = logger.module("a")
+  expect(aLogger.moduleStack).toEqual(["a"])
+
+  const bLogger = aLogger.module("b")
+  expect(bLogger.moduleStack).toEqual(["a", "b"])
+
+  const cLogger = bLogger.module("c")
+  expect(cLogger.moduleStack).toEqual(["a", "b", "c"])
+})
+
+test("Logger calls log in logger transports", () => {
+  const aTransport = new TestLoggerTransport()
+  const bTransport = new TestLoggerTransport()
+
+  const logger = new Logger({
+    loggerTransports: [aTransport, bTransport],
+    exceptionCapturers: []
   })
 
-  it("calls console.log", () => {
-    const logger = new Logger()
-    logger.trace("message", {ctx: true})
+  const context = {ctx: true}
 
-    expect(consoleTraceSpy).toHaveBeenCalledWith("message", {ctx: true})
+  logger.log(LogLevel.Fatal, "fatalala", context)
+  expect(aTransport.fake).toBeCalledWith(LogLevel.Fatal, "fatalala", context)
+  expect(bTransport.fake).toBeCalledWith(LogLevel.Fatal, "fatalala", context)
+
+  logger.trace("message", context)
+  expect(aTransport.fake).toBeCalledWith(LogLevel.Trace, "message", context)
+  expect(bTransport.fake).toBeCalledWith(LogLevel.Trace, "message", context)
+})
+
+test("Logger calls captureException in exception capturers", () => {
+  const aCapturer = new TestExceptionCapturer()
+  const bCapturer = new TestExceptionCapturer()
+
+  const logger = new Logger({
+    loggerTransports: [],
+    exceptionCapturers: [aCapturer, bCapturer]
   })
 
-  it("calls LogDNA", () => {
-    const logger = new Logger()
-    logger.error("message", {ctx: true})
+  const error = new Error("oh my")
+  const context = {ctx: true}
 
-    expect(setupDefaultLoggerSpy).lastCalledWith("")
-    expect(logdnaLogSpy).lastCalledWith("message", {
-      level: "error",
-      context: {ctx: true}
-    })
+  logger.captureException(error, context)
+  expect(aCapturer.fake).toBeCalledWith(error, context)
+  expect(bCapturer.fake).toBeCalledWith(error, context)
+})
+
+test("Logger calls captureMessage in exception capturers", () => {
+  const aCapturer = new TestExceptionCapturer()
+  const bCapturer = new TestExceptionCapturer()
+
+  const logger = new Logger({
+    loggerTransports: [],
+    exceptionCapturers: [aCapturer, bCapturer]
   })
 
-  it("calls Sentry on warn/error/fatal", () => {
-    const logger = new Logger()
-    logger.error("oh no", {ctx: true})
+  const error = "oh my, its string message"
+  const context = {ctx: true}
 
-    const sentryMessage = "Error log message: oh no"
-    expect(sentryCaptureMessageSpy).lastCalledWith(sentryMessage, {ctx: true})
+  logger.captureMessage(error, context)
+  expect(aCapturer.fake).toBeCalledWith(error, context)
+  expect(bCapturer.fake).toBeCalledWith(error, context)
+})
+
+test("Logger calls logger and capturer on warn, error and fatal log messages", () => {
+  const transport = new TestLoggerTransport()
+  const capturer = new TestExceptionCapturer()
+  const logger = new Logger({
+    loggerTransports: [transport],
+    exceptionCapturers: [capturer]
   })
 
-  it("calls LogDNA and Sentry on captureException", () => {
-    const logger = new Logger()
+  const context = {ctx: true}
 
-    const error = new Error("shit happens")
-    logger.captureException(error, {ctx: true})
+  logger.warn("warn message", context)
+  expect(transport.fake).toBeCalledWith(LogLevel.Warn, "warn message", context)
+  expect(capturer.fake).toBeCalledWith("Warning log message: warn message", context)
 
-    expect(sentryCaptureExceptionSpy).lastCalledWith(error, {ctx: true})
-    expect(logdnaLogSpy).lastCalledWith("Exception: shit happens", {
-      level: "error",
-      context: {ctx: true}
-    })
+  logger.error("error message", context)
+  expect(transport.fake).toBeCalledWith(LogLevel.Error, "error message", context)
+  expect(capturer.fake).toBeCalledWith("Error log message: error message", context)
+
+  logger.fatal("fatal message", context)
+  expect(transport.fake).toBeCalledWith(LogLevel.Fatal, "fatal message", context)
+  expect(capturer.fake).toBeCalledWith("Fatal log message: fatal message", context)
+})
+
+test("Logger calls logger and capturer on exception capture", () => {
+  const transport = new TestLoggerTransport()
+  const capturer = new TestExceptionCapturer()
+  const logger = new Logger({
+    loggerTransports: [transport],
+    exceptionCapturers: [capturer]
   })
+
+  const error = new Error("sad")
+  const context = {ctx: true}
+
+  logger.captureException(error, context)
+  expect(transport.fake).toBeCalledWith(LogLevel.Error, "Error: sad", context)
+  expect(capturer.fake).toBeCalledWith(error, context)
 })

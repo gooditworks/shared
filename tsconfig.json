@@ -10,7 +10,7 @@
     "module": "commonjs",
     "jsx": "preserve",
     "target": "es5",
-    "lib": ["esnext"],
+    "lib": ["DOM", "esnext"],
     "noEmit": true,
     "strict": true,
     "allowJs": false,
