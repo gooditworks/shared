@@ -32,11 +32,11 @@ npm i @gooditworks/monitoring
 
 ### Инициализация
 
-Пакет должен быть инициализирован перед использованием. Это делает функция `initMonitoring`, экспортируемая по-умолчанию (`export default`). Необходимо выбрать, импортировать и инициализировать необходимые модули и вызвать функцию инициализации. Изначально включены только `ConsoleTransport` и `ConsoleCapturer`.
+Пакет должен быть инициализирован перед использованием. Это делает функция `initMonitoring`, экспортируемая по-умолчанию (`export default`). Необходимо выбрать, импортировать и инициализировать необходимые модули и вызвать функцию инициализации. Изначально включены только `ConsoleTransport` и `ConsoleCapturer`. Также можно указать минимальный уровень логгирования (`minimalLogLevel`) (по-умолчанию `LogLevel.Trace`).
 
 #### Пример для Node окружения
 ```ts
-import initMonitoring from "@gooditworks/monitoring"
+import initMonitoring, {LogLevel} from "@gooditworks/monitoring"
 
 import ConsoleTransport from "@gooditworks/monitoring/logger/transport/console"
 import LogdnaNodeTransport from "@gooditworks/monitoring/logger/transport/logdnaNode"
@@ -45,6 +45,7 @@ import SentryNodeCapturer from "@gooditworks/monitoring/logger/capturer/sentryNo
 
 initMonitoring({
   logger: {
+    minimalLogLevel: LogLevel.Info,
     loggerTransports: [
       new ConsoleTransport(),
       new LogdnaNodeTransport("0123456789abcdef", {app: "readme"})

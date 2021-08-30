@@ -1,6 +1,7 @@
 import {LogLevel, LoggerTransport, ExceptionCapturer, EventContext} from "./types"
 
 interface LoggerConfig {
+  minimalLogLevel?: LogLevel
   loggerTransports: LoggerTransport[]
   exceptionCapturers: ExceptionCapturer[]
 }
@@ -26,6 +27,11 @@ class Logger {
   }
 
   log(level: LogLevel, message: string, context?: EventContext) {
+    const minimalLogLevel = this.config.minimalLogLevel || LogLevel.Trace
+    if (level < minimalLogLevel) {
+      return
+    }
+
     const fullModule = this.moduleStack.join("::")
     const fullMessage = fullModule ? `${fullModule} ${message}` : message
 

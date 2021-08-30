@@ -60,6 +60,27 @@ test("Logger calls log in logger transports", () => {
   expect(bTransport.fake).toBeCalledWith(LogLevel.Trace, "message", context)
 })
 
+test("Logger don't calls log if log level less than the minimal level", () => {
+  const transport = new TestLoggerTransport()
+  const logger = new Logger({
+    minimalLogLevel: LogLevel.Info,
+    loggerTransports: [transport],
+    exceptionCapturers: []
+  })
+
+  const context = {ctx: true}
+
+  logger.trace("message", context)
+  logger.debug("message", context)
+  expect(transport.fake).not.toBeCalled()
+
+  logger.info("message", context)
+  expect(transport.fake).toBeCalledWith(LogLevel.Info, "message", context)
+
+  logger.fatal("message", context)
+  expect(transport.fake).toBeCalledWith(LogLevel.Fatal, "message", context)
+})
+
 test("Logger calls captureException in exception capturers", () => {
   const aCapturer = new TestExceptionCapturer()
   const bCapturer = new TestExceptionCapturer()
