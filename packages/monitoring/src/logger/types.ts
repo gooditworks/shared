@@ -2,12 +2,12 @@
 type EventContext = Record<string, unknown>
 
 enum LogLevel {
-  Trace = "trace",
-  Debug = "debug",
-  Info = "info",
-  Warn = "warn",
-  Error = "error",
-  Fatal = "fatal"
+  Trace = 1,
+  Debug = 2,
+  Info = 3,
+  Warn = 4,
+  Error = 5,
+  Fatal = 6
 }
 
 abstract class LoggerTransport {

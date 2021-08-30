@@ -2,6 +2,8 @@ import Logger, {LoggerConfig} from "./logger"
 import ConsoleTransport from "./logger/transport/console"
 import ConsoleCapturer from "./logger/capturer/console"
 
+import {LogLevel} from "./logger/types"
+
 interface Config {
   logger: LoggerConfig
 }
@@ -16,4 +18,4 @@ const init = (config: Config) => {
 }
 
 export default init
-export {logger}
+export {logger, LogLevel}
