@@ -1,4 +1,16 @@
 # Changelog
+### [0.1.2](https://github.com/gooditworks/shared/compare/v0.1.1...v0.1.2) (2021-08-30)
+
+
+### Features
+
+* **monitoring:** в мониторинг добавлена поддержка установки минимального LogLevel ([073f9b2](https://github.com/gooditworks/shared/commit/073f9b2f53416b86ef5d4729e3ff2c7c2eb68869))
+
+
+### Bug Fixes
+
+* тип коммита chore добавлен в конфиг commitlint ([767c2a2](https://github.com/gooditworks/shared/commit/767c2a26eea5665c18ad9946a3a27336d0abe493))
+
 ### 0.1.1 (2021-08-24)
 
 
