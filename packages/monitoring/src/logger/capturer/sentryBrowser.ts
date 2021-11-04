@@ -21,3 +21,4 @@ class SentryBrowserCapturer extends ExceptionCapturer {
 }
 
 export default SentryBrowserCapturer
+export {Sentry}

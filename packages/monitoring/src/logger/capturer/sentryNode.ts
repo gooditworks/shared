@@ -21,3 +21,4 @@ class SentryNodeCapturer extends ExceptionCapturer {
 }
 
 export default SentryNodeCapturer
+export {Sentry}
