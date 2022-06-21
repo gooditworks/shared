@@ -1,4 +1,25 @@
 # Changelog
+### [0.1.4](https://github.com/gooditworks/shared/compare/v0.1.3...v0.1.4) (2022-06-21)
+
+
+### Features
+
+* **monitoring:** bump версии мониторинга ([fceaa3e](https://github.com/gooditworks/shared/commit/fceaa3eda1b7fa0a5d68e5c829337dc42f70e3a7))
+* **monitoring:** consoleTransport и ConsoleCapturer включены по-умолчанию ([239bc74](https://github.com/gooditworks/shared/commit/239bc742ec0d560fbd82708bfae36a3459074a73))
+* **monitoring:** в мониторинг добавлена поддержка установки минимального LogLevel ([073f9b2](https://github.com/gooditworks/shared/commit/073f9b2f53416b86ef5d4729e3ff2c7c2eb68869))
+* **monitoring:** начальная реализация модульного мониторинга ([52e710d](https://github.com/gooditworks/shared/commit/52e710d00490d4c298bac5c7dbbb737adca7836f))
+* **monitroing:** ре-экспорт Sentry в SentryExeptionCapturer ([43f3f23](https://github.com/gooditworks/shared/commit/43f3f23d1b02e5081390d16193f3287ce794f6bd))
+* Добавлен пакет мониторинга ([53afa10](https://github.com/gooditworks/shared/commit/53afa10733a14993cf3bfa0406a13b50de90b545))
+* Пакет мониторинга ([f344dfe](https://github.com/gooditworks/shared/commit/f344dfe06f806087873c3f086d2d9667f949b30b))
+
+
+### Bug Fixes
+
+* **monitoring:** добавлен пустой тест, чтобы git хуки дали запушить ([c2e3b3f](https://github.com/gooditworks/shared/commit/c2e3b3fa57213237f4ed7cb5d7985715d59ecd9f))
+* В пакет мониторинга добавлен файл .npmrc ([28bd1e7](https://github.com/gooditworks/shared/commit/28bd1e72ff2c81326d050a21bb74a3a0090a35ee))
+* тип коммита chore добавлен в конфиг commitlint ([767c2a2](https://github.com/gooditworks/shared/commit/767c2a26eea5665c18ad9946a3a27336d0abe493))
+* Удалены упоминания аналитики ([554b17f](https://github.com/gooditworks/shared/commit/554b17f1273e81cc4314e1634a096149754bc60a))
+
 ### 0.1.3 (2021-11-04)
 
 
