@@ -1,6 +1,6 @@
 {
   "name": "@gooditworks/monitoring",
-  "version": "1.3.0",
+  "version": "1.5.1",
   "description": "Monitoring library with logger",
   "repository": "https://github.com/gooditworks/shared",
   "author": "Max Eliseev <mxseev@gmail.com>",
