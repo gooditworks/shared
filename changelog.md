@@ -1,4 +1,11 @@
 # Changelog
+### [0.1.7](https://github.com/gooditworks/shared/compare/v0.1.6...v0.1.7) (2022-07-07)
+
+
+### Bug Fixes
+
+* вызов Sentry.flush в withSentry ([aa2af48](https://github.com/gooditworks/shared/commit/aa2af48bb1e87a5d6630726bc6059a88c5a27731))
+
 ### [0.1.6](https://github.com/gooditworks/shared/compare/v0.1.3...v0.1.6) (2022-07-07)
 
 
