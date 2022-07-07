@@ -18,6 +18,7 @@
     "./logger/capturer/console": "./build/logger/capturer/console.js",
     "./logger/capturer/sentryNode": "./build/logger/capturer/sentryNode.js",
     "./logger/capturer/sentryBrowser": "./build/logger/capturer/sentryBrowser.js",
+    "./logger/capturer/sentryNext": "./build/logger/capturer/sentryNext.js",
     "./next": "./build/next.js"
   },
   "typesVersions": {
@@ -36,6 +37,9 @@
       ],
       "logger/capturer/sentryBrowser": [
         "./build/logger/capturer/sentryBrowser.d.ts"
+      ],
+      "logger/capturer/sentryNext": [
+        "./build/logger/capturer/sentryNext.d.ts"
       ],
       "next": [
         "./build/next.d.ts"
