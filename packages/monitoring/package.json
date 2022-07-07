@@ -39,8 +39,8 @@
     }
   },
   "dependencies": {
-    "@logdna/logger": "^2.3.2",
-    "@sentry/browser": "^6.11.0",
-    "@sentry/node": "^6.11.0"
+    "@logdna/logger": "^2.6.6",
+    "@sentry/browser": "^7.5.1",
+    "@sentry/node": "^7.5.1"
   }
 }
