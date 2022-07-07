@@ -1,4 +1,11 @@
 # Changelog
+### [0.1.8](https://github.com/gooditworks/shared/compare/v0.1.7...v0.1.8) (2022-07-07)
+
+
+### Bug Fixes
+
+* корректный withSentry ([3cbb3c2](https://github.com/gooditworks/shared/commit/3cbb3c2ece48f3606189b022db56c86c718df0cb))
+
 ### [0.1.7](https://github.com/gooditworks/shared/compare/v0.1.6...v0.1.7) (2022-07-07)
 
 

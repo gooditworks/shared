@@ -1,6 +1,6 @@
 {
   "name": "@gooditworks/shared",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Gooditworks shared libs monorepo",
   "repository": "https://github.com/gooditworks/shared",
   "author": "Max Eliseev <mxseev@gmail.com>",
