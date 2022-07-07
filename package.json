@@ -33,6 +33,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.19.0",
     "eslint-config-airbnb-base-ts": "^14.1.1",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^26.5.3",
     "jest": "^28.1.2",
     "prettier": "^2.7.1",

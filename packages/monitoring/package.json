@@ -17,7 +17,8 @@
     "./logger/transport/logdnaNode": "./build/logger/transport/logdnaNode.js",
     "./logger/capturer/console": "./build/logger/capturer/console.js",
     "./logger/capturer/sentryNode": "./build/logger/capturer/sentryNode.js",
-    "./logger/capturer/sentryBrowser": "./build/logger/capturer/sentryBrowser.js"
+    "./logger/capturer/sentryBrowser": "./build/logger/capturer/sentryBrowser.js",
+    "./next": "./build/next.js"
   },
   "typesVersions": {
     "*": {
@@ -35,12 +36,16 @@
       ],
       "logger/capturer/sentryBrowser": [
         "./build/logger/capturer/sentryBrowser.d.ts"
+      ],
+      "next": [
+        "./build/next.d.ts"
       ]
     }
   },
   "dependencies": {
     "@logdna/logger": "^2.6.6",
     "@sentry/browser": "^7.5.1",
+    "@sentry/nextjs": "^7.5.1",
     "@sentry/node": "^7.5.1"
   }
 }
