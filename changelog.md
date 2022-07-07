@@ -1,4 +1,11 @@
 # Changelog
+### [0.1.9](https://github.com/gooditworks/shared/compare/v0.1.8...v0.1.9) (2022-07-07)
+
+
+### Bug Fixes
+
+* корректный импорт Sentry ([591c785](https://github.com/gooditworks/shared/commit/591c785ee23c231b9a05343b9f3095df249692a9))
+
 ### [0.1.8](https://github.com/gooditworks/shared/compare/v0.1.7...v0.1.8) (2022-07-07)
 
 
