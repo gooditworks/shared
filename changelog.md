@@ -1,4 +1,35 @@
 # Changelog
+### [0.1.10](https://github.com/gooditworks/shared/compare/v0.1.9...v0.1.10) (2022-07-12)
+
+### [0.1.9](https://github.com/gooditworks/shared/compare/v0.1.8...v0.1.9) (2022-07-07)
+
+
+### Bug Fixes
+
+* корректный импорт Sentry ([591c785](https://github.com/gooditworks/shared/commit/591c785ee23c231b9a05343b9f3095df249692a9))
+
+### [0.1.8](https://github.com/gooditworks/shared/compare/v0.1.7...v0.1.8) (2022-07-07)
+
+
+### Bug Fixes
+
+* корректный withSentry ([3cbb3c2](https://github.com/gooditworks/shared/commit/3cbb3c2ece48f3606189b022db56c86c718df0cb))
+
+### [0.1.7](https://github.com/gooditworks/shared/compare/v0.1.6...v0.1.7) (2022-07-07)
+
+
+### Bug Fixes
+
+* вызов Sentry.flush в withSentry ([aa2af48](https://github.com/gooditworks/shared/commit/aa2af48bb1e87a5d6630726bc6059a88c5a27731))
+
+### [0.1.6](https://github.com/gooditworks/shared/compare/v0.1.3...v0.1.6) (2022-07-07)
+
+
+### Features
+
+* **monitoring:** sentryNext exception capturer (и слово на русском) ([974f31b](https://github.com/gooditworks/shared/commit/974f31b1c1a4bfdf293fea2d515074a6ba46361d))
+* **monitoting:** реэкстпорт функций из sentry/next ([6e7667b](https://github.com/gooditworks/shared/commit/6e7667b9c6618c58f53481537f5ae5c8c9f0e7ea))
+
 ### [0.1.5](https://github.com/gooditworks/shared/compare/v0.1.4...v0.1.5) (2022-06-21)
 
 ### [0.1.4](https://github.com/gooditworks/shared/compare/v0.1.3...v0.1.4) (2022-06-21)

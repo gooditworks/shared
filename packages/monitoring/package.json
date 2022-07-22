@@ -1,6 +1,6 @@
 {
   "name": "@gooditworks/monitoring",
-  "version": "1.3.0",
+  "version": "1.5.4",
   "description": "Monitoring library with logger",
   "repository": "https://github.com/gooditworks/shared",
   "author": "Max Eliseev <mxseev@gmail.com>",
@@ -17,7 +17,9 @@
     "./logger/transport/logdnaNode": "./build/logger/transport/logdnaNode.js",
     "./logger/capturer/console": "./build/logger/capturer/console.js",
     "./logger/capturer/sentryNode": "./build/logger/capturer/sentryNode.js",
-    "./logger/capturer/sentryBrowser": "./build/logger/capturer/sentryBrowser.js"
+    "./logger/capturer/sentryBrowser": "./build/logger/capturer/sentryBrowser.js",
+    "./logger/capturer/sentryNext": "./build/logger/capturer/sentryNext.js",
+    "./next": "./build/next.js"
   },
   "typesVersions": {
     "*": {
@@ -35,12 +37,19 @@
       ],
       "logger/capturer/sentryBrowser": [
         "./build/logger/capturer/sentryBrowser.d.ts"
+      ],
+      "logger/capturer/sentryNext": [
+        "./build/logger/capturer/sentryNext.d.ts"
+      ],
+      "next": [
+        "./build/next.d.ts"
       ]
     }
   },
   "dependencies": {
-    "@logdna/logger": "^2.3.2",
-    "@sentry/browser": "^6.11.0",
-    "@sentry/node": "^6.11.0"
+    "@logdna/logger": "^2.6.6",
+    "@sentry/browser": "^7.5.1",
+    "@sentry/nextjs": "^7.5.1",
+    "@sentry/node": "^7.5.1"
   }
 }
